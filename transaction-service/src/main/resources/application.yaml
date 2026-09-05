@@ -1,3 +1,41 @@
 spring:
   application:
     name: transaction-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/transaction_db?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+    consumer:
+      group-id: transaction-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    properties:
+      "[spring.json.value.default.type]": "com.banking.transactionservice.kafka.TransactionEvent"
+      "[spring.json.trusted.packages]": "com.banking.transactionservice.kafka"
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org.apache.kafka: ERROR
+    org.springframework.kafka: ERROR
+    com.banking.transactionservice: INFO

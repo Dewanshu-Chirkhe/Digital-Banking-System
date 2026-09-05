@@ -6,6 +6,8 @@ import com.banking.transactionservice.dto.TransactionResponse;
 import com.banking.transactionservice.entity.Transaction;
 import com.banking.transactionservice.entity.TransactionStatus;
 import com.banking.transactionservice.entity.TransactionType;
+import com.banking.transactionservice.kafka.TransactionEvent;
+import com.banking.transactionservice.kafka.TransactionEventProducer;
 import com.banking.transactionservice.repositoy.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountServiceClient accountServiceClient;
+    private final TransactionEventProducer transactionEventProducer;
 
     public TransactionResponse createTransfer(CreateTransactionRequest request){
 
@@ -36,11 +39,19 @@ public class TransactionService {
 
         accountServiceClient.deductBalance(
                 request.getSenderAccountNumber(),
-                request.getReceiverAccountNumber(),
+                transactionId,
                 request.getAmount()
         );
 
-        transaction.setStatus(TransactionStatus.COMPLETED);
+        TransactionEvent event = new TransactionEvent(
+                transactionId,
+                request.getSenderAccountNumber(),
+                request.getReceiverAccountNumber(),
+                request.getAmount(),
+                TransactionType.TRANSFER.name()
+        );
+
+        transactionEventProducer.publishTransaction(event);
 
         return mapToResponse(transaction);
     }

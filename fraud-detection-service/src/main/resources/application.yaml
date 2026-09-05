@@ -38,6 +38,10 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
+fraud:
+  amount:
+    average-multiplier: 3.0
+
 server:
   port: 8084
 

@@ -24,12 +24,9 @@ public class BalanceCheckService {
     }
 
     public boolean isSuspicious(
-            String accountNumber,
+            BigDecimal currentBalance,
             BigDecimal amount) {
 
-        BigDecimal currentBalance = getAccountBalance(accountNumber);
-
-        // Account Service has already deducted the transaction amount
         BigDecimal balanceBefore = currentBalance.add(amount);
 
         BigDecimal ninetyPercent =

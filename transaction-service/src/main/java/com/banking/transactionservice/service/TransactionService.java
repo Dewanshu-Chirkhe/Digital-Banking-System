@@ -8,7 +8,7 @@ import com.banking.transactionservice.entity.TransactionStatus;
 import com.banking.transactionservice.entity.TransactionType;
 import com.banking.transactionservice.kafka.TransactionEvent;
 import com.banking.transactionservice.kafka.TransactionEventProducer;
-import com.banking.transactionservice.repositoy.TransactionRepository;
+import com.banking.transactionservice.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

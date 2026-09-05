@@ -1,9 +1,7 @@
 package com.banking.accountservice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,9 +10,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "accounts")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Account {
 
     @Id
@@ -27,7 +27,7 @@ public class Account {
     @Column(nullable = false)
     private String accountHolderName;
 
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -41,10 +41,13 @@ public class Account {
     @Column(nullable = false)
     private AccountStatus status;
 
-    @Column(nullable = false, precision = 15, scale = 2)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
-    @Column(nullable = false, precision = 15, scale = 2)
+    @Version
+    private Long version;
+
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal dailyTransactionLimit;
 
     @CreationTimestamp

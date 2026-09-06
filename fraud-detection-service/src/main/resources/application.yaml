@@ -32,7 +32,8 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
       properties:
         "[spring.json.value.default.type]": "com.banking.frauddetectionservice.kafka.TransactionEvent"
-        "[spring.json.trusted.packages]": "com.banking.frauddetectionservice.kafka"
+        "[spring.json.trusted.packages]": "com.banking.transactionservice.kafka,com.banking.frauddetectionservice.kafka"
+        "[spring.json.use.type.headers]": "false"
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
